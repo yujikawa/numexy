@@ -14,14 +14,14 @@ defmodule Numexy do
 
   ## Examples
 
-      iex> x = Numexy.new([1,2,3])
+      iex> Numexy.new([1,2,3])
       %Array{array: [1, 2, 3], shape: {3, nil}}
-      iex> x = Numexy.new([[1,2,3],[1,2,3]])
+      iex> Numexy.new([[1,2,3],[1,2,3]])
       %Array{array: [[1, 2, 3], [1, 2, 3]], shape: {2, 3}}
 
   """
   def new(array) do
-    shape = get_shape(array)
+    shape = {row_count(array), col_count(array)}
     %Array{array: array, shape: shape}
   end
 
@@ -35,21 +35,18 @@ defmodule Numexy do
       %Array{array: [1,2,3], shape: {3, nil}}
       iex> y = Numexy.new([1,2,3])
       %Array{array: [1,2,3], shape: {3, nil}}
-      iex> y = Numexy.dot(x, y)
+      iex> Numexy.dot(x, y)
       14
   """
-  def dot(x, y) do
-    14
+  def dot(%Array{array: x, shape: {_, nil}}, %Array{array: y, shape: {_, nil}}) do
+    # vector * vector
+    Enum.zip(x, y)
+    |> sum(0)
   end
 
-  @doc """
-  Get matrix shape.
-  """
-  defp get_shape(array) do
-    row = row_count(array)
-    col = col_count(array)
-    {row, col}
-  end
+  defp sum([], total), do: total
+  defp sum([{a,b}|tail], total), do: sum(tail, a*b+total)
+  defp sum([head|tail], total), do: sum(tail, head+total)
 
   defp row_count(array) do
     Enum.count(array)
@@ -58,7 +55,7 @@ defmodule Numexy do
   defp col_count([head| _ ]) when is_list(head) do
     Enum.count(head)
   end
-  defp col_count([head| _ ]) do
+  defp col_count(_) do
     nil
   end
 
