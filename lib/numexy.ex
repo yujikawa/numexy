@@ -41,12 +41,8 @@ defmodule Numexy do
   def dot(%Array{array: x, shape: {_, nil}}, %Array{array: y, shape: {_, nil}}) do
     # vector * vector
     Enum.zip(x, y)
-    |> sum(0)
+    |> Enum.reduce(0, fn({a,b},acc)-> a*b+acc end)
   end
-
-  defp sum([], total), do: total
-  defp sum([{a,b}|tail], total), do: sum(tail, a*b+total)
-  defp sum([head|tail], total), do: sum(tail, head+total)
 
   defp row_count(array) do
     Enum.count(array)
