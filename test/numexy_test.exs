@@ -8,11 +8,11 @@ defmodule NumexyTest do
     assert v.shape == {3, nil}
   end
 
-    test "matrix struct" do
-      m = Numexy.new([[1,2,3],[1,2,3]])
-      assert m.array == [[1,2,3],[1,2,3]]
-      assert m.shape == {2, 3}
-    end
+  test "matrix struct" do
+    m = Numexy.new([[1,2,3],[1,2,3]])
+    assert m.array == [[1,2,3],[1,2,3]]
+    assert m.shape == {2, 3}
+  end
 
   test "inner product (vector)" do
     x = Numexy.new([1,2,3])

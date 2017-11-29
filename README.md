@@ -21,8 +21,12 @@ end
 iex> x = Numexy.new([1,2,3])
 %Array{array: [1, 2, 3], shape: {3, nil}}
 
-iex> x = Numexy.new([[1,2,3],[1,2,3]])
-%Array{array: [[1, 2, 3], [1, 2, 3]], shape: {2, 3}}
+iex> y = Numexy.new([1,2,3])
+%Array{array: [1, 2, 3], shape: {3, nil}}
+
+iex> Numexy.dot(x, y)
+14
+
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
