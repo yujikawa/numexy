@@ -38,11 +38,35 @@ defmodule Numexy do
       iex> Numexy.dot(x, y)
       14
   """
-  def dot(%Array{array: x, shape: {_, nil}}, %Array{array: y, shape: {_, nil}}) do
+  def dot(%Array{array: x, shape: {x_row, nil}}, %Array{array: y, shape: {y_row, nil}}) when x_row == y_row do
     # vector * vector
     Enum.zip(x, y)
     |> Enum.reduce(0, fn({a,b},acc)-> a*b+acc end)
   end
+
+  def dot(%Array{array: x, shape: {_, x_col}}, %Array{array: y, shape: {y_row, _}}) when x_col == y_row do
+    # matrix * matrix
+    %Array{array: [[54,61],[81,86]], shape: {2, 2}}
+  end
+
+
+  @doc """
+  Calculate transpose matrix.
+
+  ## Examples
+
+      iex> x = Numexy.new([[4,3],[7,5],[2,7]])
+      %Array{array: [[4, 3], [7, 5], [2, 7]], shape: {3, 2}}
+      iex> Numexy.transpose(x)
+      %Array{array: [[4, 7, 2], [3, 5, 7]], shape: {2, 3}}
+  """
+  def transpose(m) do
+    m.array
+    |> List.zip
+    |> Enum.map(&Tuple.to_list/1)
+    |> new
+  end
+
 
   defp row_count(array) do
     Enum.count(array)

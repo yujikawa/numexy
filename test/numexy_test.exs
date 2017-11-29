@@ -14,10 +14,25 @@ defmodule NumexyTest do
     assert m.shape == {2, 3}
   end
 
-  test "inner product (vector)" do
+  test "inner product (vector and vector)" do
     x = Numexy.new([1,2,3])
     y = Numexy.new([1,2,3])
     assert Numexy.dot(x, y) == 14
+  end
+
+  test "inner product (matrix and matrix)" do
+    x = Numexy.new([[1,6,4],[2,9,5]])
+    y = Numexy.new([[4,3],[7,5],[2,7]])
+    m = Numexy.dot(x, y)
+    assert m.array == [[54,61],[81,86]]
+    assert m.shape == {2, 2}
+  end
+
+  test "transpose matrix." do
+    x = Numexy.new([[4,3],[7,5],[2,7]])
+    m = Numexy.transpose(x)
+    assert m.array == [[4,7,2],[3,5,7]]
+    assert m.shape == {2, 3}
   end
 
   #  test "inner product (matrix)" do
