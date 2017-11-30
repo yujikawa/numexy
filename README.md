@@ -1,4 +1,5 @@
 # Numexy
+[![Build Status](https://travis-ci.org/yujikawa/numexy.svg?branch=master)](https://travis-ci.org/yujikawa/numexy)
 
 numexy is a library like Python's numpy. It is a library for matrix calculation.
 
