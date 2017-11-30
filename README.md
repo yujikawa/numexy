@@ -1,6 +1,5 @@
 # Numexy
 [![Build Status](https://travis-ci.org/yujikawa/numexy.svg?branch=master)](https://travis-ci.org/yujikawa/numexy)
-
 numexy is a library like Python's numpy. It is a library for matrix calculation.
 
 ## Installation
@@ -34,3 +33,5 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/numexy](https://hexdocs.pm/numexy).
 
+## License
+MIT
