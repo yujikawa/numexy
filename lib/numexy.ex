@@ -60,7 +60,7 @@ defmodule Numexy do
       iex> Numexy.transpose(x)
       %Array{array: [[4, 7, 2], [3, 5, 7]], shape: {2, 3}}
   """
-  def transpose(%Array{array: x, shape: {_, _}}) do
+  def transpose(%Array{array: x, shape: {_, col}}) when col != nil do
     x
     |> List.zip
     |> Enum.map(&Tuple.to_list/1)
