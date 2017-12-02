@@ -53,4 +53,16 @@ defmodule NumexyTest do
     assert m.shape == {3, nil}
   end
 
+  test "matrix zeros." do
+    m = Numexy.zeros({2, 3})
+    assert m.array == [[0,0,0],[0,0,0]]
+    assert m.shape == {2, 3}
+  end
+
+  test "vector zeros." do
+    m = Numexy.zeros({3, nil})
+    assert m.array == [0,0,0]
+    assert m.shape == {3, nil}
+  end
+
 end
