@@ -40,4 +40,17 @@ defmodule NumexyTest do
   #    y = Numexy.new([[1,2,3],[1,2,3],[1,2,3]])
   #    assert Numexy.dot(x, y) == %Array{array: [[ 6, 12, 18]], shape: {1, 3}}
   #  end
+
+  test "matrix ones." do
+    m = Numexy.ones({2, 3})
+    assert m.array == [[1,1,1],[1,1,1]]
+    assert m.shape == {2, 3}
+  end
+
+  test "vector ones." do
+    m = Numexy.ones({3, nil})
+    assert m.array == [1,1,1]
+    assert m.shape == {3, nil}
+  end
+
 end

@@ -67,6 +67,24 @@ defmodule Numexy do
     |> new
   end
 
+  @doc """
+  Create ones matrix or vector.
+
+  ## Examples
+
+    iex> Numexy.ones({2, 3})
+    %Array{array: [[1, 1, 1], [1, 1, 1]], shape: {2, 3}}
+    iex> Numexy.ones({3, nil})
+    %Array{array: [1, 1, 1], shape: {3, nil}}
+  """
+  def ones({row, nil}) do
+    new(for i<-1..row, do: 1)
+  end
+
+  def ones({row, col}) do
+    new(for i<-1..row, do: for i<-1..col, do: 1)
+  end
+
 
   defp row_count(array) do
     Enum.count(array)
@@ -78,5 +96,4 @@ defmodule Numexy do
   defp col_count(_) do
     nil
   end
-
 end
