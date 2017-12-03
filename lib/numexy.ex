@@ -50,12 +50,20 @@ defmodule Numexy do
       14
   """
   def dot(%Array{array: x, shape: {x_row, nil}}, %Array{array: y, shape: {y_row, nil}}) when x_row == y_row do
-    # vector * vector
+    # vector * vector return scalar
     dot_vector(x, y)
   end
 
+  def dot(%Array{array: x, shape: {_, x_col}}, %Array{array: y, shape: {y_row, nil}}) when x_col == y_row do
+    # matrix * vector return vector
+    m = for xi <- x, yi<-[y], do: [xi, yi]
+    m
+    |> Enum.map(fn([x,y])-> dot_vector(x, y) end)
+    |> new
+  end
+
   def dot(%Array{array: x, shape: {x_row, x_col}}, %Array{array: y, shape: {y_row, _}}) when x_col == y_row do
-    # matrix * matrix
+    # matrix * matrix return matrix
     m = for xi <- x, yi<-list_transpose(y), do: [xi, yi]
     m
     |> Enum.map(fn([x,y])-> dot_vector(x, y) end)

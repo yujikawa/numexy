@@ -20,6 +20,14 @@ defmodule NumexyTest do
     assert Numexy.dot(x, y) == 14
   end
 
+  test "inner product (matrix and vector)" do
+    x = Numexy.new([[1,6,4],[2,9,5]])
+    y = Numexy.new([1,2,3])
+    m = Numexy.dot(x, y)
+    assert m.array == [25, 35]
+    assert m.shape == {2, nil}
+  end
+
   test "inner product (matrix and matrix)" do
     x = Numexy.new([[1,6,4],[2,9,5]])
     y = Numexy.new([[4,3],[7,5],[2,7]])
