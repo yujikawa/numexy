@@ -104,10 +104,10 @@ defmodule Numexy do
 
   ## Examples
 
-    iex> Numexy.ones({2, 3})
-    %Array{array: [[1, 1, 1], [1, 1, 1]], shape: {2, 3}}
-    iex> Numexy.ones({3, nil})
-    %Array{array: [1, 1, 1], shape: {3, nil}}
+      iex> Numexy.ones({2, 3})
+      %Array{array: [[1, 1, 1], [1, 1, 1]], shape: {2, 3}}
+      iex> Numexy.ones({3, nil})
+      %Array{array: [1, 1, 1], shape: {3, nil}}
   """
   def ones({row, nil}) do
     List.duplicate(1, row)
@@ -125,10 +125,10 @@ defmodule Numexy do
 
   ## Examples
 
-    iex> Numexy.zeros({2, 3})
-    %Array{array: [[0, 0, 0], [0, 0, 0]], shape: {2, 3}}
-    iex> Numexy.zeros({3, nil})
-    %Array{array: [0, 0, 0], shape: {3, nil}}
+      iex> Numexy.zeros({2, 3})
+      %Array{array: [[0, 0, 0], [0, 0, 0]], shape: {2, 3}}
+      iex> Numexy.zeros({3, nil})
+      %Array{array: [0, 0, 0], shape: {3, nil}}
   """
   def zeros({row, nil}) do
     List.duplicate(0, row)
