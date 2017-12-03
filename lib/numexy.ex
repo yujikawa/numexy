@@ -25,6 +25,17 @@ defmodule Numexy do
     %Array{array: array, shape: shape}
   end
 
+  defp row_count(array) do
+    Enum.count(array)
+  end
+
+  defp col_count([head| _ ]) when is_list(head) do
+    Enum.count(head)
+  end
+
+  defp col_count(_) do
+    nil
+  end
 
   @doc """
   Calculate inner product.
@@ -40,13 +51,26 @@ defmodule Numexy do
   """
   def dot(%Array{array: x, shape: {x_row, nil}}, %Array{array: y, shape: {y_row, nil}}) when x_row == y_row do
     # vector * vector
+    dot_vector(x, y)
+  end
+
+  def dot(%Array{array: x, shape: {x_row, x_col}}, %Array{array: y, shape: {y_row, _}}) when x_col == y_row do
+    # matrix * matrix
+    m = for xi <- x, yi<-list_transpose(y), do: [xi, yi]
+    m
+    |> dot_matrix([])
+    |> Enum.chunk_every(x_row)
+    |> new
+  end
+
+  defp dot_vector(x ,y) do
     Enum.zip(x, y)
     |> Enum.reduce(0, fn({a,b},acc)-> a*b+acc end)
   end
 
-  def dot(%Array{array: x, shape: {_, x_col}}, %Array{array: y, shape: {y_row, _}}) when x_col == y_row do
-    # matrix * matrix
-    %Array{array: [[54,61],[81,86]], shape: {2, 2}}
+  defp dot_matrix([], total), do: total
+  defp dot_matrix([[x, y]|tail], total) do
+    dot_matrix(tail, total ++ [dot_vector(x,y)])
   end
 
 
@@ -62,9 +86,14 @@ defmodule Numexy do
   """
   def transpose(%Array{array: x, shape: {_, col}}) when col != nil do
     x
+    |> list_transpose
+    |> new
+  end
+
+  defp list_transpose(list) do
+    list
     |> List.zip
     |> Enum.map(&Tuple.to_list/1)
-    |> new
   end
 
   @doc """
@@ -78,11 +107,14 @@ defmodule Numexy do
     %Array{array: [1, 1, 1], shape: {3, nil}}
   """
   def ones({row, nil}) do
-    new(for _<-1..row, do: 1)
+    List.duplicate(1, row)
+    |> new
   end
 
   def ones({row, col}) do
-    new(for _<-1..row, do: for _<-1..col, do: 1)
+    List.duplicate(1, col)
+    |> List.duplicate(row)
+    |> new
   end
 
   @doc """
@@ -96,21 +128,15 @@ defmodule Numexy do
     %Array{array: [0, 0, 0], shape: {3, nil}}
   """
   def zeros({row, nil}) do
-    new(for _<-1..row, do: 0)
+    List.duplicate(0, row)
+    |> new
   end
 
   def zeros({row, col}) do
-    new(for _<-1..row, do: for _<-1..col, do: 0)
+    List.duplicate(0, col)
+    |> List.duplicate(row)
+    |> new
   end
 
-  defp row_count(array) do
-    Enum.count(array)
-  end
 
-  defp col_count([head| _ ]) when is_list(head) do
-    Enum.count(head)
-  end
-  defp col_count(_) do
-    nil
-  end
 end

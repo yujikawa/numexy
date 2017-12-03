@@ -35,12 +35,6 @@ defmodule NumexyTest do
     assert m.shape == {2, 3}
   end
 
-  #  test "inner product (matrix)" do
-  #    x = Numexy.new([[1,2,3]])
-  #    y = Numexy.new([[1,2,3],[1,2,3],[1,2,3]])
-  #    assert Numexy.dot(x, y) == %Array{array: [[ 6, 12, 18]], shape: {1, 3}}
-  #  end
-
   test "matrix ones." do
     m = Numexy.ones({2, 3})
     assert m.array == [[1,1,1],[1,1,1]]
