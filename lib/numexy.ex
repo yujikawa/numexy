@@ -58,21 +58,16 @@ defmodule Numexy do
     # matrix * matrix
     m = for xi <- x, yi<-list_transpose(y), do: [xi, yi]
     m
-    |> dot_matrix([])
+    |> Enum.map(fn([x,y])-> dot_vector(x, y) end)
     |> Enum.chunk_every(x_row)
     |> new
+
   end
 
   defp dot_vector(x ,y) do
     Enum.zip(x, y)
     |> Enum.reduce(0, fn({a,b},acc)-> a*b+acc end)
   end
-
-  defp dot_matrix([], total), do: total
-  defp dot_matrix([[x, y]|tail], total) do
-    dot_matrix(tail, total ++ [dot_vector(x,y)])
-  end
-
 
   @doc """
   Calculate transpose matrix.
