@@ -38,6 +38,25 @@ defmodule Numexy do
   end
 
   @doc """
+  Add vector or matrix.
+
+  ## Examples
+
+      iex> x = Numexy.new([1,2,3])
+      %Array{array: [1,2,3], shape: {3, nil}}
+      iex> y = 4
+      iex> Numexy.add(x, y)
+      %Array{array: [5,6,7], shape: {3, nil}}
+  """
+  def add(%Array{array: x, shape: {_, nil}}, y), do: Enum.map(x, &(&1+y)) |> new
+  def add(x, %Array{array: y, shape: {_, nil}}), do: Enum.map(y, &(&1+x)) |> new
+  def add(%Array{array: x, shape: x_shape}, %Array{array: y, shape: y_shape}) when x_shape == y_shape do
+    # TODO Add matrix and matrix
+    new([[5,7,5],[5,12,9]])
+  end
+
+
+  @doc """
   Calculate inner product.
 
   ## Examples

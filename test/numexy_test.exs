@@ -14,6 +14,25 @@ defmodule NumexyTest do
     assert m.shape == {2, 3}
   end
 
+  test "add vector and scalar" do
+    x = Numexy.new([1,2,3])
+    y = 4
+    v = Numexy.add(x, y)
+    assert v.array == [5,6,7]
+    assert v.shape == {3, nil}
+    v = Numexy.add(y, x)
+    assert v.array == [5,6,7]
+    assert v.shape == {3, nil}
+  end
+
+  test "add matrix and matrix" do
+    x = Numexy.new([[1,2,3],[4,5,6]])
+    y = Numexy.new([[4,5,2],[1,7,3]])
+    m = Numexy.add(x, y)
+    assert m.array == [[5,7,5],[5,12,9]]
+    assert m.shape == {2, 3}
+  end
+
   test "inner product (vector and vector)" do
     x = Numexy.new([1,2,3])
     y = Numexy.new([1,2,3])
