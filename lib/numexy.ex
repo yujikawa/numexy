@@ -20,22 +20,10 @@ defmodule Numexy do
       %Array{array: [[1, 2, 3], [1, 2, 3]], shape: {2, 3}}
 
   """
-  def new(array) do
-    shape = {row_count(array), col_count(array)}
-    %Array{array: array, shape: shape}
-  end
-
-  defp row_count(array) do
-    Enum.count(array)
-  end
-
-  defp col_count([head| _ ]) when is_list(head) do
-    Enum.count(head)
-  end
-
-  defp col_count(_) do
-    nil
-  end
+  def new(array), do: %Array{array: array, shape: {row_count(array), col_count(array)}}
+  defp row_count(array), do: Enum.count(array)
+  defp col_count([head| _ ]) when is_list(head), do: Enum.count(head)
+  defp col_count(_), do: nil
 
   @doc """
   Add vector or matrix.
@@ -48,32 +36,32 @@ defmodule Numexy do
       iex> Numexy.add(x, y)
       %Array{array: [5,6,7], shape: {3, nil}}
   """
-  def add(%Array{array: vector, shape: {_, nil}}, scalar) when is_number(scalar), do: Enum.map(vector, &(&1+scalar)) |> new
-  def add(scalar, %Array{array: vector, shape: {_, nil}}) when is_number(scalar), do: Enum.map(vector, &(&1+scalar)) |> new
-  def add(%Array{array: x, shape: {x_row, nil}}, %Array{array: y, shape: {y_row, nil}}) when x_row == y_row do
+  def add(%Array{array: v, shape: {_, nil}}, s) when is_number(s), do: Enum.map(v, &(&1+s)) |> new
+  def add(s, %Array{array: v, shape: {_, nil}}) when is_number(s), do: Enum.map(v, &(&1+s)) |> new
+  def add(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
     # vector + vector
-    Enum.zip(x, y)
+    Enum.zip(xv, yv)
     |> Enum.map(fn({a,b})->a+b end)
     |> new
   end
-  def add(%Array{array: x, shape: x_shape}, %Array{array: y, shape: y_shape}) when x_shape == y_shape do
+  def add(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape}) when xm_shape == ym_shape do
     # matrix + matrix
-    {_, x_col} = x_shape
-    xv = List.flatten(x)
-    yv = List.flatten(y)
+    {_, xm_col} = xm_shape
+    xv = List.flatten(xm)
+    yv = List.flatten(ym)
     Enum.zip(xv,yv)
     |> Enum.map(fn({a,b})->a+b end)
-    |> Enum.chunk_every(x_col)
+    |> Enum.chunk_every(xm_col)
     |> new
   end
-  def add(%Array{array: matrix, shape: {_, col}}, scalar) when col != nil do
-    matrix
-    |> Enum.map(&(Enum.map(&1,fn(x)->x+scalar end)))
+  def add(%Array{array: m, shape: {_, col}}, s) when col != nil do
+    m
+    |> Enum.map(&(Enum.map(&1,fn(x)->x+s end)))
     |> new
   end
-  def add(scalar, %Array{array: matrix, shape: {_, col}}) when col != nil do
-    matrix
-    |> Enum.map(&(Enum.map(&1,fn(x)->x+scalar end)))
+  def add(s, %Array{array: m, shape: {_, col}}) when col != nil do
+    m
+    |> Enum.map(&(Enum.map(&1,fn(x)->x+s end)))
     |> new
   end
 
@@ -91,22 +79,22 @@ defmodule Numexy do
       iex> Numexy.dot(x, y)
       14
   """
-  def dot(%Array{array: x, shape: {x_row, nil}}, %Array{array: y, shape: {y_row, nil}}) when x_row == y_row do
+  def dot(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
     # vector * vector return scalar
-    dot_vector(x, y)
+    dot_vector(xv, yv)
   end
 
-  def dot(%Array{array: x, shape: {_, x_col}}, %Array{array: y, shape: {y_row, nil}}) when x_col == y_row do
+  def dot(%Array{array: m, shape: {_, m_col}}, %Array{array: v, shape: {v_row, nil}}) when m_col == v_row do
     # matrix * vector return vector
-    m = for xi <- x, yi<-[y], do: [xi, yi]
+    m = for mi <- m, vi<-[v], do: [mi, vi]
     m
     |> Enum.map(fn([x,y])-> dot_vector(x, y) end)
     |> new
   end
 
-  def dot(%Array{array: x, shape: {x_row, x_col}}, %Array{array: y, shape: {y_row, _}}) when x_col == y_row do
+  def dot(%Array{array: xm, shape: {x_row, x_col}}, %Array{array: ym, shape: {y_row, _}}) when x_col == y_row do
     # matrix * matrix return matrix
-    m = for xi <- x, yi<-list_transpose(y), do: [xi, yi]
+    m = for xi <- xm, yi<-list_transpose(ym), do: [xi, yi]
     m
     |> Enum.map(fn([x,y])-> dot_vector(x, y) end)
     |> Enum.chunk_every(x_row)
@@ -114,8 +102,8 @@ defmodule Numexy do
 
   end
 
-  defp dot_vector(x ,y) do
-    Enum.zip(x, y)
+  defp dot_vector(xv ,yv) do
+    Enum.zip(xv, yv)
     |> Enum.reduce(0, fn({a,b},acc)-> a*b+acc end)
   end
 
@@ -129,8 +117,8 @@ defmodule Numexy do
       iex> Numexy.transpose(x)
       %Array{array: [[4, 7, 2], [3, 5, 7]], shape: {2, 3}}
   """
-  def transpose(%Array{array: x, shape: {_, col}}) when col != nil do
-    x
+  def transpose(%Array{array: m, shape: {_, col}}) when col != nil do
+    m
     |> list_transpose
     |> new
   end
@@ -183,5 +171,24 @@ defmodule Numexy do
     |> new
   end
 
+  @doc """
+  Sum matrix or vector.
+
+  ## Examples
+
+      iex> Numexy.new([2,9,5]) |> Numexy.sum
+      16
+      iex> Numexy.new([[1,2,3],[4,5,6]]) |> Numexy.sum
+      21
+  """
+  def sum(%Array{array: v, shape: {_, nil}}) do
+    v
+    |> Enum.reduce(&(&1+&2))
+  end
+
+  def sum(%Array{array: m, shape: _}) do
+    m
+    |> Enum.reduce(0, &(Enum.reduce(&1, fn(x,acc)-> x+acc end) + &2))
+  end
 
 end

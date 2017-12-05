@@ -107,4 +107,14 @@ defmodule NumexyTest do
     assert m.shape == {3, nil}
   end
 
+  test "vector sum." do
+    v = Numexy.new([2,9,5])
+    assert 16 == Numexy.sum(v)
+  end
+
+  test "matrix sum." do
+    m = Numexy.new([[1,2,3],[4,5,6]])
+    assert 21 == Numexy.sum(m)
+  end
+
 end
