@@ -48,12 +48,35 @@ defmodule Numexy do
       iex> Numexy.add(x, y)
       %Array{array: [5,6,7], shape: {3, nil}}
   """
-  def add(%Array{array: x, shape: {_, nil}}, y), do: Enum.map(x, &(&1+y)) |> new
-  def add(x, %Array{array: y, shape: {_, nil}}), do: Enum.map(y, &(&1+x)) |> new
-  def add(%Array{array: x, shape: x_shape}, %Array{array: y, shape: y_shape}) when x_shape == y_shape do
-    # TODO Add matrix and matrix
-    new([[5,7,5],[5,12,9]])
+  def add(%Array{array: vector, shape: {_, nil}}, scalar) when is_number(scalar), do: Enum.map(vector, &(&1+scalar)) |> new
+  def add(scalar, %Array{array: vector, shape: {_, nil}}) when is_number(scalar), do: Enum.map(vector, &(&1+scalar)) |> new
+  def add(%Array{array: x, shape: {x_row, nil}}, %Array{array: y, shape: {y_row, nil}}) when x_row == y_row do
+    # vector + vector
+    Enum.zip(x, y)
+    |> Enum.map(fn({a,b})->a+b end)
+    |> new
   end
+  def add(%Array{array: x, shape: x_shape}, %Array{array: y, shape: y_shape}) when x_shape == y_shape do
+    # matrix + matrix
+    {_, x_col} = x_shape
+    xv = List.flatten(x)
+    yv = List.flatten(y)
+    Enum.zip(xv,yv)
+    |> Enum.map(fn({a,b})->a+b end)
+    |> Enum.chunk_every(x_col)
+    |> new
+  end
+  def add(%Array{array: matrix, shape: {_, col}}, scalar) when col != nil do
+    matrix
+    |> Enum.map(&(Enum.map(&1,fn(x)->x+scalar end)))
+    |> new
+  end
+  def add(scalar, %Array{array: matrix, shape: {_, col}}) when col != nil do
+    matrix
+    |> Enum.map(&(Enum.map(&1,fn(x)->x+scalar end)))
+    |> new
+  end
+
 
 
   @doc """
