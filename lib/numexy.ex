@@ -191,4 +191,30 @@ defmodule Numexy do
     |> Enum.reduce(0, &(Enum.reduce(&1, fn(x,acc)-> x+acc end) + &2))
   end
 
+  @doc """
+  Avarage matrix or vector.
+
+  ## Examples
+
+      iex> Numexy.new([2,9,5]) |> Numexy.avg
+      5.333333333333333
+      iex> Numexy.new([[1,2,3],[4,5,6]]) |> Numexy.avg
+      3.5
+  """
+  def avg(%Array{array: v, shape: {row, nil}}) do
+    v
+    |> Enum.reduce(&(&1+&2))
+    |> float_div(row)
+  end
+
+  def avg(%Array{array: m, shape: {row, col}}) do
+    m
+    |> Enum.reduce(0, &(Enum.reduce(&1, fn(x,acc)-> x+acc end) + &2))
+    |> float_div(row*col)
+  end
+
+  defp float_div(dividend, divisor) do
+    dividend / divisor
+  end
+
 end

@@ -117,4 +117,14 @@ defmodule NumexyTest do
     assert 21 == Numexy.sum(m)
   end
 
+  test "vector avarage." do
+    v = Numexy.new([2,9,5])
+    assert 5.333333333333333 == Numexy.avg(v)
+  end
+
+  test "matrix avarage." do
+    m = Numexy.new([[1,2,3],[4,5,6]])
+    assert 3.5 == Numexy.avg(m)
+  end
+
 end
