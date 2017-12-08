@@ -164,4 +164,9 @@ defmodule NumexyTest do
     assert 3.5 == Numexy.avg(m)
   end
 
+  test "vector get value" do
+    v = Numexy.new([2,9,5])
+    assert 9 == Numexy.get(v, {2, nil})
+  end
+
 end

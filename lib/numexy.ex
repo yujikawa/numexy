@@ -255,4 +255,16 @@ defmodule Numexy do
     dividend / divisor
   end
 
+  @doc """
+  Get matrix or vector value.
+
+  ## Examples
+
+      iex> Numexy.new([2,9,5]) |> Numexy.get({2, nil})
+      9
+      iex> Numexy.new([[1,2,3],[4,5,6]]) |> Numexy.get({2, 1})
+      4
+  """
+  def get(%Array{array: v, shape: {_, nil}}, {row, nil}), do: Enum.at(v, row - 1)
+  def get(%Array{array: m, shape: _}, {row, col}), do: Enum.at(m, row - 1) |> Enum.at(col - 1)
 end
