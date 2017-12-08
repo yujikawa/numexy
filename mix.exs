@@ -4,7 +4,7 @@ defmodule Numexy.Mixfile do
   def project do
     [
       app: :numexy,
-      version: "0.1.2",
+      version: "0.1.3",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       description: "It is a library for matrix and vector calculation.",
