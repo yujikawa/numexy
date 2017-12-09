@@ -267,4 +267,40 @@ defmodule Numexy do
   """
   def get(%Array{array: v, shape: {_, nil}}, {row, nil}), do: Enum.at(v, row - 1)
   def get(%Array{array: m, shape: _}, {row, col}), do: Enum.at(m, row - 1) |> Enum.at(col - 1)
+
+  @doc """
+  Get index of max value.
+
+  ## Examples
+
+      iex> Numexy.new([[1,2,9],[4,5,6]]) |> Numexy.argmax
+      2
+      iex> Numexy.new([[1,2,9],[4,6,3]]) |> Numexy.argmax(:row)
+      [2, 1]
+      iex> Numexy.new([[1,2,9],[4,6,3]]) |> Numexy.argmax(:col)
+      [1, 1, 0]
+  """
+  def argmax(%Array{array: v, shape: {_, nil}}), do: v |> find_max_value_index
+
+  def argmax(%Array{array: m, shape: _}) do
+    m |> find_max_value_index
+  end
+
+  def argmax(%Array{array: m, shape: _}, :row) do
+    m
+    |> Enum.map(&(Numexy.find_max_value_index(&1)))
+  end
+
+  def argmax(%Array{array: m, shape: _}, :col) do
+    m
+    |> list_transpose
+    |> Enum.map(&(Numexy.find_max_value_index(&1)))
+  end
+
+  def find_max_value_index(list) do
+    flat_list = List.flatten(list)
+    max_value = Enum.max(flat_list)
+    flat_list |> Enum.find_index(&(&1==max_value))
+  end
+
 end

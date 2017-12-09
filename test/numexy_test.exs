@@ -169,4 +169,19 @@ defmodule NumexyTest do
     assert 9 == Numexy.get(v, {2, nil})
   end
 
+  test "test no arguments argmax." do
+    m = Numexy.new([[1,2,9],[4,5,6]])
+    assert 2 == Numexy.argmax(m)
+  end
+
+  test "test :row argument argmax." do
+    m = Numexy.new([[1,2,9],[4,6,3]])
+    assert [2, 1] == Numexy.argmax(m, :row)
+  end
+
+  test "test :col argument argmax." do
+    m = Numexy.new([[1,2,9],[4,6,3]])
+    assert [1, 1, 0] == Numexy.argmax(m, :col)
+  end
+
 end
