@@ -40,4 +40,4 @@ and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/numexy](https://hexdocs.pm/numexy).
 
 ## License
-MIT
+This project is licensed under the terms of the MIT license, see LICENSE.
