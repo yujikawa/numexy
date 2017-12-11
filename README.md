@@ -28,6 +28,11 @@ iex> y = Numexy.new([1,2,3])
 iex> Numexy.dot(x, y)
 14
 
+iex> Numexy.new([2,9,5]) |> Numexy.sum
+16
+
+iex> Numexy.new([[1,2,3],[4,5,6]]) |> Numexy.sum
+21
 ```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
