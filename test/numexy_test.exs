@@ -189,4 +189,9 @@ defmodule NumexyTest do
     assert v.array == [0, 1, 1]
   end
 
+  test "test sigmoid function" do
+    v = Numexy.new([-2,9,5]) |> Numexy.sigmoid()
+    assert v.array == [0.11920292202211755, 0.9998766054240137, 0.9933071490757153]
+  end
+
 end

@@ -320,4 +320,18 @@ defmodule Numexy do
   defp step_function_output(num) when num > 0, do: 1
   defp step_function_output(num) when num <= 0, do: 0
 
+  @doc """
+  Get sigmoid function value.
+
+  ## Examples
+
+      iex> Numexy.new([-2,9,5]) |> Numexy.sigmoid()
+      %Array{array: [0.11920292202211755, 0.9998766054240137, 0.9933071490757153], shape: {3, nil}}
+  """
+  def sigmoid(%Array{array: v, shape: {_, nil}}) do
+    v
+    |> Enum.map(&(1/(1+ :math.exp(-1 * &1))))
+    |> new
+  end
+
 end
