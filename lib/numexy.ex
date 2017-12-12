@@ -334,4 +334,21 @@ defmodule Numexy do
     |> new
   end
 
+  @doc """
+  Get relu function value.
+
+  ## Examples
+
+      iex> Numexy.new([-2,9,5]) |> Numexy.relu()
+      %Array{array: [0, 9, 5], shape: {3, nil}}
+  """
+  def relu(%Array{array: v, shape: {_, nil}}) do
+    v
+    |> Enum.map(&(relu_output(&1)))
+    |> new
+  end
+
+  defp relu_output(x) when x>0, do: x
+  defp relu_output(x) when x<=0, do: 0
+
 end

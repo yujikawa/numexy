@@ -194,4 +194,9 @@ defmodule NumexyTest do
     assert v.array == [0.11920292202211755, 0.9998766054240137, 0.9933071490757153]
   end
 
+  test "test relu function" do
+    v = Numexy.new([-2,9,5]) |> Numexy.relu()
+    assert v.array == [0, 9, 5]
+  end
+
 end
