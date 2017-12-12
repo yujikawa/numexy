@@ -199,4 +199,9 @@ defmodule NumexyTest do
     assert v.array == [0, 9, 5]
   end
 
+  test "test softmax function" do
+    v = Numexy.new([-2,9,5]) |> Numexy.softmax()
+    assert v.array == [1.6401031494862326e-5, 0.9819976839988096, 0.017985914969695496]
+  end
+
 end

@@ -351,4 +351,18 @@ defmodule Numexy do
   defp relu_output(x) when x>0, do: x
   defp relu_output(x) when x<=0, do: 0
 
+  @doc """
+  Get softmax function value.
+
+  ## Examples
+
+      iex> Numexy.new([-2,9,5]) |> Numexy.softmax()
+      %Array{array: [1.6401031494862326e-5, 0.9819976839988096, 0.017985914969695496], shape: {3, nil}}
+  """
+  def softmax(%Array{array: v, shape: {_, nil}}) do
+    sum_num = Enum.reduce(v, 0, &(:math.exp(&1)+&2))
+    v
+    |> Enum.map(&(:math.exp(&1)/sum_num))
+    |> new
+  end
 end
