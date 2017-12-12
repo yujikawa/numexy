@@ -303,4 +303,21 @@ defmodule Numexy do
     flat_list |> Enum.find_index(&(&1==max_value))
   end
 
+  @doc """
+  Get step function value.
+
+  ## Examples
+
+      iex> Numexy.new([-2,9,5]) |> Numexy.step_function()
+      %Array{array: [0, 1, 1], shape: {3, nil}}
+  """
+  def step_function(%Array{array: v, shape: {_, nil}}) do
+    v
+    |> Enum.map(&(step_function_output(&1)))
+    |> new
+  end
+
+  defp step_function_output(num) when num > 0, do: 1
+  defp step_function_output(num) when num <= 0, do: 0
+
 end

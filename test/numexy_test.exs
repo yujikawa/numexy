@@ -184,4 +184,9 @@ defmodule NumexyTest do
     assert [1, 1, 0] == Numexy.argmax(m, :col)
   end
 
+  test "test step function" do
+    v = Numexy.new([-2,9,5]) |> Numexy.step_function()
+    assert v.array == [0, 1, 1]
+  end
+
 end
