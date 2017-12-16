@@ -288,16 +288,16 @@ defmodule Numexy do
 
   def argmax(%Array{array: m, shape: _}, :row) do
     m
-    |> Enum.map(&(Numexy.find_max_value_index(&1)))
+    |> Enum.map(&(find_max_value_index(&1)))
   end
 
   def argmax(%Array{array: m, shape: _}, :col) do
     m
     |> list_transpose
-    |> Enum.map(&(Numexy.find_max_value_index(&1)))
+    |> Enum.map(&(find_max_value_index(&1)))
   end
 
-  def find_max_value_index(list) do
+  defp find_max_value_index(list) do
     flat_list = List.flatten(list)
     max_value = Enum.max(flat_list)
     flat_list |> Enum.find_index(&(&1==max_value))
