@@ -66,7 +66,7 @@ defmodule Numexy do
   end
 
   @doc """
-  Sub vector or matrix.
+  Subtraction vector or matrix.
 
   ## Examples
 
@@ -142,6 +142,46 @@ defmodule Numexy do
   def mul(s, %Array{array: m, shape: {_, col}}) when col != nil do
     m
     |> Enum.map(&(Enum.map(&1,fn(x)->x*s end)))
+    |> new
+  end
+
+  @doc """
+  Division vector or matrix.
+
+  ## Examples
+
+      iex> x = Numexy.new([8,4,2])
+      %Array{array: [8,4,2], shape: {3, nil}}
+      iex> y = 4
+      iex> Numexy.div(x, y)
+      %Array{array: [2.0,1.0,0.5], shape: {3, nil}}
+  """
+  def div(%Array{array: v, shape: {_, nil}}, s) when is_number(s), do: Enum.map(v, &(&1/s)) |> new
+  def div(s, %Array{array: v, shape: {_, nil}}) when is_number(s), do: Enum.map(v, &(&1/s)) |> new
+  def div(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
+    # vector + vector
+    Enum.zip(xv, yv)
+    |> Enum.map(fn({a,b})->a/b end)
+    |> new
+  end
+  def div(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape}) when xm_shape == ym_shape do
+    # matrix + matrix
+    {_, xm_col} = xm_shape
+    xv = List.flatten(xm)
+    yv = List.flatten(ym)
+    Enum.zip(xv,yv)
+    |> Enum.map(fn({a,b})->a/b end)
+    |> Enum.chunk_every(xm_col)
+    |> new
+  end
+  def div(%Array{array: m, shape: {_, col}}, s) when col != nil do
+    m
+    |> Enum.map(&(Enum.map(&1,fn(x)->x/s end)))
+    |> new
+  end
+  def div(s, %Array{array: m, shape: {_, col}}) when col != nil do
+    m
+    |> Enum.map(&(Enum.map(&1,fn(x)->x/s end)))
     |> new
   end
 

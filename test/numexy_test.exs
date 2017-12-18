@@ -131,6 +131,44 @@ defmodule NumexyTest do
     assert m.shape == {2, 3}
   end
 
+  test "div vector and scalar" do
+    x = Numexy.new([9,6,3])
+    y = 3
+    v = Numexy.div(x, y)
+    assert v.array == [3.0,2.0,1.0]
+    assert v.shape == {3, nil}
+  end
+
+  test "div vector and vector" do
+    x = Numexy.new([8,10,4])
+    y = Numexy.new([4,5,2])
+    v = Numexy.div(x, y)
+    assert v.array == [2.0,2.0,2.0]
+    assert v.shape == {3, nil}
+  end
+
+  test "div matrix and scalar" do
+    x = Numexy.new([[8,4,4],[4,12,8]])
+    y = 4
+    m = Numexy.div(x, y)
+    assert m.array == [[2.0,1.0,1.0],[1.0,3.0,2.0]]
+    assert m.shape == {2, 3}
+    x = 4
+    y = Numexy.new([[8,4,4],[4,12,8]])
+    m = Numexy.div(x, y)
+    assert m.array == [[2.0,1.0,1.0],[1.0,3.0,2.0]]
+    assert m.shape == {2, 3}
+  end
+
+  test "div matrix and matrix" do
+    x = Numexy.new([[8,10,6],[4,7,6]])
+    y = Numexy.new([[4,5,2],[1,7,3]])
+    m = Numexy.div(x, y)
+    assert m.array == [[2.0,2.0,3.0],[4.0,1.0,2.0]]
+    assert m.shape == {2, 3}
+  end
+
+
   test "inner product (vector and vector)" do
     x = Numexy.new([1,2,3])
     y = Numexy.new([1,2,3])
