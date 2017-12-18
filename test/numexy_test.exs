@@ -54,6 +54,46 @@ defmodule NumexyTest do
     assert m.shape == {2, 3}
   end
 
+  test "sub vector and scalar" do
+    x = Numexy.new([1,2,3])
+    y = 4
+    v = Numexy.sub(x, y)
+    assert v.array == [-3,-2,-1]
+    assert v.shape == {3, nil}
+    v = Numexy.sub(y, x)
+    assert v.array == [-3,-2,-1]
+    assert v.shape == {3, nil}
+  end
+
+  test "sub vector and vector" do
+    x = Numexy.new([1,2,3])
+    y = Numexy.new([4,5,2])
+    v = Numexy.sub(x, y)
+    assert v.array == [-3,-3,1]
+    assert v.shape == {3, nil}
+  end
+
+  test "sub matrix and scalar" do
+    x = Numexy.new([[1,2,3],[4,5,6]])
+    y = 4
+    m = Numexy.sub(x, y)
+    assert m.array == [[-3,-2,-1],[0,1,2]]
+    assert m.shape == {2, 3}
+    x = 4
+    y = Numexy.new([[1,2,3],[4,5,6]])
+    m = Numexy.sub(x, y)
+    assert m.array == [[-3,-2,-1],[0,1,2]]
+    assert m.shape == {2, 3}
+  end
+
+  test "sub matrix and matrix" do
+    x = Numexy.new([[1,2,3],[4,5,6]])
+    y = Numexy.new([[4,5,2],[1,7,3]])
+    m = Numexy.sub(x, y)
+    assert m.array == [[-3,-3,1],[3,-2,3]]
+    assert m.shape == {2, 3}
+  end
+
   test "multiplication vector and scalar" do
     x = Numexy.new([1,2,3])
     y = 3

@@ -66,6 +66,46 @@ defmodule Numexy do
   end
 
   @doc """
+  Sub vector or matrix.
+
+  ## Examples
+
+      iex> x = Numexy.new([1,2,3])
+      %Array{array: [1,2,3], shape: {3, nil}}
+      iex> y = 4
+      iex> Numexy.sub(x, y)
+      %Array{array: [-3,-2,-1], shape: {3, nil}}
+  """
+  def sub(%Array{array: v, shape: {_, nil}}, s) when is_number(s), do: Enum.map(v, &(&1-s)) |> new
+  def sub(s, %Array{array: v, shape: {_, nil}}) when is_number(s), do: Enum.map(v, &(&1-s)) |> new
+  def sub(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
+    # vector + vector
+    Enum.zip(xv, yv)
+    |> Enum.map(fn({a,b})->a-b end)
+    |> new
+  end
+  def sub(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape}) when xm_shape == ym_shape do
+    # matrix + matrix
+    {_, xm_col} = xm_shape
+    xv = List.flatten(xm)
+    yv = List.flatten(ym)
+    Enum.zip(xv,yv)
+    |> Enum.map(fn({a,b})->a-b end)
+    |> Enum.chunk_every(xm_col)
+    |> new
+  end
+  def sub(%Array{array: m, shape: {_, col}}, s) when col != nil do
+    m
+    |> Enum.map(&(Enum.map(&1,fn(x)->x-s end)))
+    |> new
+  end
+  def sub(s, %Array{array: m, shape: {_, col}}) when col != nil do
+    m
+    |> Enum.map(&(Enum.map(&1,fn(x)->x-s end)))
+    |> new
+  end
+
+  @doc """
   Multiplication vector or matrix.
 
   ## Examples
@@ -365,4 +405,5 @@ defmodule Numexy do
     |> Enum.map(&(:math.exp(&1)/sum_num))
     |> new
   end
+  
 end
