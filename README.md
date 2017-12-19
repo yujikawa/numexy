@@ -1,5 +1,8 @@
 # Numexy
 [![Build Status](https://travis-ci.org/yujikawa/numexy.svg?branch=master)](https://travis-ci.org/yujikawa/numexy)
+[![hex.pm version](https://img.shields.io/hexpm/v/numexy.svg)](https://hex.pm/packages/numexy)
+[![hex.pm](https://img.shields.io/hexpm/l/numexy.svg)](https://github.com/yujikawa/numexy/blob/master/LICENSE)
+
 
 numexy is a library like Python's numpy. It is a library for matrix calculation.
 
