@@ -282,4 +282,10 @@ defmodule NumexyTest do
     assert v.array == [1.6401031494862326e-5, 0.9819976839988096, 0.017985914969695496]
   end
 
+  test "test reshape" do
+    m = Numexy.reshape([1,2,3,4,5,6], 3)
+    assert m.array == [[1,2,3],[4,5,6]]
+    assert m.shape == {2, 3}
+  end
+
 end

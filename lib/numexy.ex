@@ -355,10 +355,6 @@ defmodule Numexy do
 
       iex> Numexy.new([[1,2,9],[4,5,6]]) |> Numexy.argmax
       2
-      iex> Numexy.new([[1,2,9],[4,6,3]]) |> Numexy.argmax(:row)
-      [2, 1]
-      iex> Numexy.new([[1,2,9],[4,6,3]]) |> Numexy.argmax(:col)
-      [1, 1, 0]
   """
   def argmax(%Array{array: v, shape: {_, nil}}), do: v |> find_max_value_index
 
@@ -366,6 +362,16 @@ defmodule Numexy do
     m |> find_max_value_index
   end
 
+  @doc """
+  Get index of max value row or col.
+
+  ## Examples
+
+      iex> Numexy.new([[1,2,9],[4,6,3]]) |> Numexy.argmax(:row)
+      [2, 1]
+      iex> Numexy.new([[1,2,9],[4,6,3]]) |> Numexy.argmax(:col)
+      [1, 1, 0]
+  """
   def argmax(%Array{array: m, shape: _}, :row) do
     m
     |> Enum.map(&(find_max_value_index(&1)))
@@ -443,6 +449,20 @@ defmodule Numexy do
     sum_num = Enum.reduce(v, 0, &(:math.exp(&1)+&2))
     v
     |> Enum.map(&(:math.exp(&1)/sum_num))
+    |> new
+  end
+
+  @doc """
+  Reshape list.
+
+  ## Examples
+
+      iex> Numexy.reshape([1,2,3,4,5,6], 3)
+      %Array{array: [[1,2,3],[4,5,6]], shape: {2, 3}}
+  """
+  def reshape(list, col) when rem(length(list), col) == 0 do
+    list
+    |> Enum.chunk_every(col)
     |> new
   end
   
