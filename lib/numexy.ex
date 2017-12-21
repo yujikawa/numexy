@@ -465,5 +465,21 @@ defmodule Numexy do
     |> Enum.chunk_every(col)
     |> new
   end
+
+  @doc """
+  Calculate outer product.
+
+  ## Examples
+
+      iex> Numexy.new([1,2,3,4]) |> Numexy.outer(Numexy.new([4,3,2,1]))
+      %Array{array: [[4,3,2,1],[8,6,4,2],[12,9,6,3],[16,12,8,4]], shape: {4, 4}}
+
+  """
+  def outer(%Array{array: array1, shape: _}, %Array{array: array2, shape: _}) do
+    list1 = List.flatten(array1)
+    list2 = List.flatten(array2)
+    Enum.map(list1, &(Enum.map(list2, fn(x)->x*&1 end)))
+    |> new
+  end
   
 end

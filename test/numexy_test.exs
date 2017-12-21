@@ -288,4 +288,19 @@ defmodule NumexyTest do
     assert m.shape == {2, 3}
   end
 
+  test "test outer" do
+    v1 = Numexy.new([1,2,3,4])
+    v2 = Numexy.new([4,3,2,1])
+    m = Numexy.outer(v1, v2)
+    assert m.array == [[4,3,2,1],[8,6,4,2],[12,9,6,3],[16,12,8,4]]
+    assert m.shape == {4, 4}
+
+    m1 = Numexy.new([[1,2],[3,4]])
+    m2 = Numexy.new([[4,3],[2,1]])
+    m = Numexy.outer(m1, m2)
+    assert m.array == [[4,3,2,1],[8,6,4,2],[12,9,6,3],[16,12,8,4]]
+    assert m.shape == {4, 4}
+
+  end
+
 end
