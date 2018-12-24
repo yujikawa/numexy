@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/yujikawa/numexy.svg?branch=master)](https://travis-ci.org/yujikawa/numexy)
 [![hex.pm version](https://img.shields.io/hexpm/v/numexy.svg)](https://hex.pm/packages/numexy)
 [![Coverage Status](https://coveralls.io/repos/github/yujikawa/numexy/badge.svg)](https://coveralls.io/github/yujikawa/numexy)
-[![hex.pm](https://img.shields.io/hexpm/l/numexy.svg)](https://github.com/yujikawa/numexy/blob/master/LICENSE)
+[![hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/yujikawa/numexy/blob/master/LICENSE)
 
 
 
