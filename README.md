@@ -45,4 +45,4 @@ and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/numexy](https://hexdocs.pm/numexy).
 
 ## License
-This project is licensed under the terms of the MIT license, see LICENSE.
+This project is licensed under the terms of the Apache license, see LICENSE.
