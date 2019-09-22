@@ -4,16 +4,13 @@ defmodule Numexy.Mixfile do
   def project do
     [
       app: :numexy,
-      version: "0.1.8",
+      version: "0.1.9",
       elixir: "~> 1.5",
       start_permanent: Mix.env() == :prod,
       description: "It is a library for matrix and vector calculation.",
       package: [
-        # メンテナ(以前は :contributors でしたが deprecated になりました。)
-        maintainers: ["Yuji Kawakami"],
-        # ライセンス名、ここでは MIT にしてみました
-        licenses: ["MIT"],
-        # リンク集
+        maintainers: ["Yuji Kawakami", "Susumu Yamazaki"],
+        licenses: ["Apache 2.0"],
         links: %{"GitHub" => "https://github.com/yujikawa/numexy"}
       ],
       deps: deps(),
