@@ -1,10 +1,6 @@
-defmodule Array do
-
-  defstruct array: [], shape: {nil, nil}
-
-end
-
 defmodule Numexy do
+  alias Numexy.Array
+
   @moduledoc """
   Documentation for Numexy.
   """
@@ -15,14 +11,14 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([1,2,3])
-      %Array{array: [1, 2, 3], shape: {3, nil}}
+      %Numexy.Array{array: [1, 2, 3], shape: {3, nil}}
       iex> Numexy.new([[1,2,3],[1,2,3]])
-      %Array{array: [[1, 2, 3], [1, 2, 3]], shape: {2, 3}}
+      %Numexy.Array{array: [[1, 2, 3], [1, 2, 3]], shape: {2, 3}}
 
   """
   def new(array), do: %Array{array: array, shape: {row_count(array), col_count(array)}}
   defp row_count(array), do: Enum.count(array)
-  defp col_count([head| _ ]) when is_list(head), do: Enum.count(head)
+  defp col_count([head | _]) when is_list(head), do: Enum.count(head)
   defp col_count(_), do: nil
 
   @doc """
@@ -31,37 +27,47 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.add(x, y)
-      %Array{array: [5,6,7], shape: {3, nil}}
+      %Numexy.Array{array: [5,6,7], shape: {3, nil}}
   """
-  def add(%Array{array: v, shape: {_, nil}}, s) when is_number(s), do: Enum.map(v, &(&1+s)) |> new
-  def add(s, %Array{array: v, shape: {_, nil}}) when is_number(s), do: Enum.map(v, &(&1+s)) |> new
-  def add(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
+  def add(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
+    do: Enum.map(v, &(&1 + s)) |> new
+
+  def add(s, %Array{array: v, shape: {_, nil}}) when is_number(s),
+    do: Enum.map(v, &(&1 + s)) |> new
+
+  def add(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}})
+      when xv_row == yv_row do
     # vector + vector
     Enum.zip(xv, yv)
-    |> Enum.map(fn({a,b})->a+b end)
+    |> Enum.map(fn {a, b} -> a + b end)
     |> new
   end
-  def add(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape}) when xm_shape == ym_shape do
+
+  def add(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape})
+      when xm_shape == ym_shape do
     # matrix + matrix
     {_, xm_col} = xm_shape
     xv = List.flatten(xm)
     yv = List.flatten(ym)
-    Enum.zip(xv,yv)
-    |> Enum.map(fn({a,b})->a+b end)
+
+    Enum.zip(xv, yv)
+    |> Enum.map(fn {a, b} -> a + b end)
     |> Enum.chunk_every(xm_col)
     |> new
   end
+
   def add(%Array{array: m, shape: {_, col}}, s) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x+s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x + s end))
     |> new
   end
+
   def add(s, %Array{array: m, shape: {_, col}}) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x+s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x + s end))
     |> new
   end
 
@@ -71,37 +77,47 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.sub(x, y)
-      %Array{array: [-3,-2,-1], shape: {3, nil}}
+      %Numexy.Array{array: [-3,-2,-1], shape: {3, nil}}
   """
-  def sub(%Array{array: v, shape: {_, nil}}, s) when is_number(s), do: Enum.map(v, &(&1-s)) |> new
-  def sub(s, %Array{array: v, shape: {_, nil}}) when is_number(s), do: Enum.map(v, &(&1-s)) |> new
-  def sub(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
+  def sub(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
+    do: Enum.map(v, &(&1 - s)) |> new
+
+  def sub(s, %Array{array: v, shape: {_, nil}}) when is_number(s),
+    do: Enum.map(v, &(&1 - s)) |> new
+
+  def sub(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}})
+      when xv_row == yv_row do
     # vector + vector
     Enum.zip(xv, yv)
-    |> Enum.map(fn({a,b})->a-b end)
+    |> Enum.map(fn {a, b} -> a - b end)
     |> new
   end
-  def sub(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape}) when xm_shape == ym_shape do
+
+  def sub(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape})
+      when xm_shape == ym_shape do
     # matrix + matrix
     {_, xm_col} = xm_shape
     xv = List.flatten(xm)
     yv = List.flatten(ym)
-    Enum.zip(xv,yv)
-    |> Enum.map(fn({a,b})->a-b end)
+
+    Enum.zip(xv, yv)
+    |> Enum.map(fn {a, b} -> a - b end)
     |> Enum.chunk_every(xm_col)
     |> new
   end
+
   def sub(%Array{array: m, shape: {_, col}}, s) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x-s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x - s end))
     |> new
   end
+
   def sub(s, %Array{array: m, shape: {_, col}}) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x-s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x - s end))
     |> new
   end
 
@@ -111,37 +127,47 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.mul(x, y)
-      %Array{array: [4,8,12], shape: {3, nil}}
+      %Numexy.Array{array: [4,8,12], shape: {3, nil}}
   """
-  def mul(%Array{array: v, shape: {_, nil}}, s) when is_number(s), do: Enum.map(v, &(&1*s)) |> new
-  def mul(s, %Array{array: v, shape: {_, nil}}) when is_number(s), do: Enum.map(v, &(&1*s)) |> new
-  def mul(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
+  def mul(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
+    do: Enum.map(v, &(&1 * s)) |> new
+
+  def mul(s, %Array{array: v, shape: {_, nil}}) when is_number(s),
+    do: Enum.map(v, &(&1 * s)) |> new
+
+  def mul(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}})
+      when xv_row == yv_row do
     # vector + vector
     Enum.zip(xv, yv)
-    |> Enum.map(fn({a,b})->a*b end)
+    |> Enum.map(fn {a, b} -> a * b end)
     |> new
   end
-  def mul(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape}) when xm_shape == ym_shape do
+
+  def mul(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape})
+      when xm_shape == ym_shape do
     # matrix + matrix
     {_, xm_col} = xm_shape
     xv = List.flatten(xm)
     yv = List.flatten(ym)
-    Enum.zip(xv,yv)
-    |> Enum.map(fn({a,b})->a*b end)
+
+    Enum.zip(xv, yv)
+    |> Enum.map(fn {a, b} -> a * b end)
     |> Enum.chunk_every(xm_col)
     |> new
   end
+
   def mul(%Array{array: m, shape: {_, col}}, s) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x*s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x * s end))
     |> new
   end
+
   def mul(s, %Array{array: m, shape: {_, col}}) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x*s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x * s end))
     |> new
   end
 
@@ -151,37 +177,47 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([8,4,2])
-      %Array{array: [8,4,2], shape: {3, nil}}
+      %Numexy.Array{array: [8,4,2], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.div(x, y)
-      %Array{array: [2.0,1.0,0.5], shape: {3, nil}}
+      %Numexy.Array{array: [2.0,1.0,0.5], shape: {3, nil}}
   """
-  def div(%Array{array: v, shape: {_, nil}}, s) when is_number(s), do: Enum.map(v, &(&1/s)) |> new
-  def div(s, %Array{array: v, shape: {_, nil}}) when is_number(s), do: Enum.map(v, &(&1/s)) |> new
-  def div(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
+  def div(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
+    do: Enum.map(v, &(&1 / s)) |> new
+
+  def div(s, %Array{array: v, shape: {_, nil}}) when is_number(s),
+    do: Enum.map(v, &(&1 / s)) |> new
+
+  def div(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}})
+      when xv_row == yv_row do
     # vector + vector
     Enum.zip(xv, yv)
-    |> Enum.map(fn({a,b})->a/b end)
+    |> Enum.map(fn {a, b} -> a / b end)
     |> new
   end
-  def div(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape}) when xm_shape == ym_shape do
+
+  def div(%Array{array: xm, shape: xm_shape}, %Array{array: ym, shape: ym_shape})
+      when xm_shape == ym_shape do
     # matrix + matrix
     {_, xm_col} = xm_shape
     xv = List.flatten(xm)
     yv = List.flatten(ym)
-    Enum.zip(xv,yv)
-    |> Enum.map(fn({a,b})->a/b end)
+
+    Enum.zip(xv, yv)
+    |> Enum.map(fn {a, b} -> a / b end)
     |> Enum.chunk_every(xm_col)
     |> new
   end
+
   def div(%Array{array: m, shape: {_, col}}, s) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x/s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x / s end))
     |> new
   end
+
   def div(s, %Array{array: m, shape: {_, col}}) when col != nil do
     m
-    |> Enum.map(&(Enum.map(&1,fn(x)->x/s end)))
+    |> Enum.map(&Enum.map(&1, fn x -> x / s end))
     |> new
   end
 
@@ -191,38 +227,42 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> Numexy.dot(x, y)
       14
   """
-  def dot(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}}) when xv_row == yv_row do
+  def dot(%Array{array: xv, shape: {xv_row, nil}}, %Array{array: yv, shape: {yv_row, nil}})
+      when xv_row == yv_row do
     # vector * vector return scalar
     dot_vector(xv, yv)
   end
 
-  def dot(%Array{array: m, shape: {_, m_col}}, %Array{array: v, shape: {v_row, nil}}) when m_col == v_row do
+  def dot(%Array{array: m, shape: {_, m_col}}, %Array{array: v, shape: {v_row, nil}})
+      when m_col == v_row do
     # matrix * vector return vector
-    m = for mi <- m, vi<-[v], do: [mi, vi]
+    m = for mi <- m, vi <- [v], do: [mi, vi]
+
     m
-    |> Enum.map(fn([x,y])-> dot_vector(x, y) end)
+    |> Enum.map(fn [x, y] -> dot_vector(x, y) end)
     |> new
   end
 
-  def dot(%Array{array: xm, shape: {x_row, x_col}}, %Array{array: ym, shape: {y_row, _}}) when x_col == y_row do
+  def dot(%Array{array: xm, shape: {x_row, x_col}}, %Array{array: ym, shape: {y_row, _}})
+      when x_col == y_row do
     # matrix * matrix return matrix
-    m = for xi <- xm, yi<-list_transpose(ym), do: [xi, yi]
+    m = for xi <- xm, yi <- list_transpose(ym), do: [xi, yi]
+
     m
-    |> Enum.map(fn([x,y])-> dot_vector(x, y) end)
+    |> Enum.map(fn [x, y] -> dot_vector(x, y) end)
     |> Enum.chunk_every(x_row)
     |> new
-
   end
 
-  defp dot_vector(xv ,yv) do
+  defp dot_vector(xv, yv) do
     Enum.zip(xv, yv)
-    |> Enum.reduce(0, fn({a,b},acc)-> a*b+acc end)
+    |> Enum.reduce(0, fn {a, b}, acc -> a * b + acc end)
   end
 
   @doc """
@@ -243,7 +283,7 @@ defmodule Numexy do
 
   defp list_transpose(list) do
     list
-    |> List.zip
+    |> List.zip()
     |> Enum.map(&Tuple.to_list/1)
   end
 
@@ -274,9 +314,9 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.zeros({2, 3})
-      %Array{array: [[0, 0, 0], [0, 0, 0]], shape: {2, 3}}
+      %Numexy.Array{array: [[0, 0, 0], [0, 0, 0]], shape: {2, 3}}
       iex> Numexy.zeros({3, nil})
-      %Array{array: [0, 0, 0], shape: {3, nil}}
+      %Numexy.Array{array: [0, 0, 0], shape: {3, nil}}
   """
   def zeros({row, nil}) do
     List.duplicate(0, row)
@@ -301,12 +341,12 @@ defmodule Numexy do
   """
   def sum(%Array{array: v, shape: {_, nil}}) do
     v
-    |> Enum.reduce(&(&1+&2))
+    |> Enum.reduce(&(&1 + &2))
   end
 
   def sum(%Array{array: m, shape: _}) do
     m
-    |> Enum.reduce(0, &(Enum.reduce(&1, fn(x,acc)-> x+acc end) + &2))
+    |> Enum.reduce(0, &(Enum.reduce(&1, fn x, acc -> x + acc end) + &2))
   end
 
   @doc """
@@ -321,14 +361,14 @@ defmodule Numexy do
   """
   def avg(%Array{array: v, shape: {row, nil}}) do
     v
-    |> Enum.reduce(&(&1+&2))
+    |> Enum.reduce(&(&1 + &2))
     |> float_div(row)
   end
 
   def avg(%Array{array: m, shape: {row, col}}) do
     m
-    |> Enum.reduce(0, &(Enum.reduce(&1, fn(x,acc)-> x+acc end) + &2))
-    |> float_div(row*col)
+    |> Enum.reduce(0, &(Enum.reduce(&1, fn x, acc -> x + acc end) + &2))
+    |> float_div(row * col)
   end
 
   defp float_div(dividend, divisor) do
@@ -374,19 +414,19 @@ defmodule Numexy do
   """
   def argmax(%Array{array: m, shape: _}, :row) do
     m
-    |> Enum.map(&(find_max_value_index(&1)))
+    |> Enum.map(&find_max_value_index(&1))
   end
 
   def argmax(%Array{array: m, shape: _}, :col) do
     m
     |> list_transpose
-    |> Enum.map(&(find_max_value_index(&1)))
+    |> Enum.map(&find_max_value_index(&1))
   end
 
   defp find_max_value_index(list) do
     flat_list = List.flatten(list)
     max_value = Enum.max(flat_list)
-    flat_list |> Enum.find_index(&(&1==max_value))
+    flat_list |> Enum.find_index(&(&1 == max_value))
   end
 
   @doc """
@@ -395,11 +435,11 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.step_function()
-      %Array{array: [0, 1, 1], shape: {3, nil}}
+      %Numexy.Array{array: [0, 1, 1], shape: {3, nil}}
   """
   def step_function(%Array{array: v, shape: {_, nil}}) do
     v
-    |> Enum.map(&(step_function_output(&1)))
+    |> Enum.map(&step_function_output(&1))
     |> new
   end
 
@@ -412,11 +452,11 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.sigmoid()
-      %Array{array: [0.11920292202211755, 0.9998766054240137, 0.9933071490757153], shape: {3, nil}}
+      %Numexy.Array{array: [0.11920292202211755, 0.9998766054240137, 0.9933071490757153], shape: {3, nil}}
   """
   def sigmoid(%Array{array: v, shape: {_, nil}}) do
     v
-    |> Enum.map(&(1/(1+ :math.exp(-1 * &1))))
+    |> Enum.map(&(1 / (1 + :math.exp(-1 * &1))))
     |> new
   end
 
@@ -426,16 +466,16 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.relu()
-      %Array{array: [0, 9, 5], shape: {3, nil}}
+      %Numexy.Array{array: [0, 9, 5], shape: {3, nil}}
   """
   def relu(%Array{array: v, shape: {_, nil}}) do
     v
-    |> Enum.map(&(relu_output(&1)))
+    |> Enum.map(&relu_output(&1))
     |> new
   end
 
-  defp relu_output(x) when x>0, do: x
-  defp relu_output(x) when x<=0, do: 0
+  defp relu_output(x) when x > 0, do: x
+  defp relu_output(x) when x <= 0, do: 0
 
   @doc """
   Get softmax function value.
@@ -443,12 +483,13 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.softmax()
-      %Array{array: [1.6401031494862326e-5, 0.9819976839988096, 0.017985914969695496], shape: {3, nil}}
+      %Numexy.Array{array: [1.6401031494862326e-5, 0.9819976839988096, 0.017985914969695496], shape: {3, nil}}
   """
   def softmax(%Array{array: v, shape: {_, nil}}) do
-    sum_num = Enum.reduce(v, 0, &(:math.exp(&1)+&2))
+    sum_num = Enum.reduce(v, 0, &(:math.exp(&1) + &2))
+
     v
-    |> Enum.map(&(:math.exp(&1)/sum_num))
+    |> Enum.map(&(:math.exp(&1) / sum_num))
     |> new
   end
 
@@ -458,7 +499,7 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.reshape([1,2,3,4,5,6], 3)
-      %Array{array: [[1,2,3],[4,5,6]], shape: {2, 3}}
+      %Numexy.Array{array: [[1,2,3],[4,5,6]], shape: {2, 3}}
   """
   def reshape(list, col) when rem(length(list), col) == 0 do
     list
@@ -472,14 +513,14 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([1,2,3,4]) |> Numexy.outer(Numexy.new([4,3,2,1]))
-      %Array{array: [[4,3,2,1],[8,6,4,2],[12,9,6,3],[16,12,8,4]], shape: {4, 4}}
+      %Numexy.Array{array: [[4,3,2,1],[8,6,4,2],[12,9,6,3],[16,12,8,4]], shape: {4, 4}}
 
   """
   def outer(%Array{array: array1, shape: _}, %Array{array: array2, shape: _}) do
     list1 = List.flatten(array1)
     list2 = List.flatten(array2)
-    Enum.map(list1, &(Enum.map(list2, fn(x)->x*&1 end)))
+
+    Enum.map(list1, &Enum.map(list2, fn x -> x * &1 end))
     |> new
   end
-  
 end

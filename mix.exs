@@ -4,14 +4,14 @@ defmodule Numexy.Mixfile do
   def project do
     [
       app: :numexy,
-      version: "0.1.8",
+      version: "0.1.9",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       description: "It is a library for matrix and vector calculation.",
       package: [
-        maintainers: ["Yuji Kawakami"],             # メンテナ(以前は :contributors でしたが deprecated になりました。)
-        licenses: ["MIT"],                       # ライセンス名、ここでは MIT にしてみました
-        links: %{"GitHub" => "https://github.com/yujikawa/numexy"} # リンク集
+        maintainers: ["Yuji Kawakami", "Susumu Yamazaki"],
+        licenses: ["Apache 2.0"],
+        links: %{"GitHub" => "https://github.com/yujikawa/numexy"}
       ],
       deps: deps(),
       test_coverage: [tool: ExCoveralls]
@@ -28,7 +28,7 @@ defmodule Numexy.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
       {:excoveralls, "~> 0.7", only: :test}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},

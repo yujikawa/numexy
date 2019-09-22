@@ -10,13 +10,13 @@ numexy is a library like Python's numpy. It is a library for matrix calculation.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+The package can be installed
 by adding `numexy` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:numexy, "~> 0.1.0"}
+    {:numexy, "~> 0.1.9"}
   ]
 end
 ```
