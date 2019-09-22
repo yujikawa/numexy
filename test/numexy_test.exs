@@ -1,4 +1,5 @@
 defmodule NumexyTest do
+  alias Numexy.Array
   use ExUnit.Case
   doctest Numexy
 

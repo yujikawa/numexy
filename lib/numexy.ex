@@ -1,8 +1,6 @@
-defmodule Array do
-  defstruct array: [], shape: {nil, nil}
-end
-
 defmodule Numexy do
+  alias Numexy.Array
+
   @moduledoc """
   Documentation for Numexy.
   """
@@ -13,9 +11,9 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([1,2,3])
-      %Array{array: [1, 2, 3], shape: {3, nil}}
+      %Numexy.Array{array: [1, 2, 3], shape: {3, nil}}
       iex> Numexy.new([[1,2,3],[1,2,3]])
-      %Array{array: [[1, 2, 3], [1, 2, 3]], shape: {2, 3}}
+      %Numexy.Array{array: [[1, 2, 3], [1, 2, 3]], shape: {2, 3}}
 
   """
   def new(array), do: %Array{array: array, shape: {row_count(array), col_count(array)}}
@@ -29,10 +27,10 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.add(x, y)
-      %Array{array: [5,6,7], shape: {3, nil}}
+      %Numexy.Array{array: [5,6,7], shape: {3, nil}}
   """
   def add(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
     do: Enum.map(v, &(&1 + s)) |> new
@@ -79,10 +77,10 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.sub(x, y)
-      %Array{array: [-3,-2,-1], shape: {3, nil}}
+      %Numexy.Array{array: [-3,-2,-1], shape: {3, nil}}
   """
   def sub(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
     do: Enum.map(v, &(&1 - s)) |> new
@@ -129,10 +127,10 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.mul(x, y)
-      %Array{array: [4,8,12], shape: {3, nil}}
+      %Numexy.Array{array: [4,8,12], shape: {3, nil}}
   """
   def mul(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
     do: Enum.map(v, &(&1 * s)) |> new
@@ -179,10 +177,10 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([8,4,2])
-      %Array{array: [8,4,2], shape: {3, nil}}
+      %Numexy.Array{array: [8,4,2], shape: {3, nil}}
       iex> y = 4
       iex> Numexy.div(x, y)
-      %Array{array: [2.0,1.0,0.5], shape: {3, nil}}
+      %Numexy.Array{array: [2.0,1.0,0.5], shape: {3, nil}}
   """
   def div(%Array{array: v, shape: {_, nil}}, s) when is_number(s),
     do: Enum.map(v, &(&1 / s)) |> new
@@ -229,9 +227,9 @@ defmodule Numexy do
   ## Examples
 
       iex> x = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> y = Numexy.new([1,2,3])
-      %Array{array: [1,2,3], shape: {3, nil}}
+      %Numexy.Array{array: [1,2,3], shape: {3, nil}}
       iex> Numexy.dot(x, y)
       14
   """
@@ -316,9 +314,9 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.zeros({2, 3})
-      %Array{array: [[0, 0, 0], [0, 0, 0]], shape: {2, 3}}
+      %Numexy.Array{array: [[0, 0, 0], [0, 0, 0]], shape: {2, 3}}
       iex> Numexy.zeros({3, nil})
-      %Array{array: [0, 0, 0], shape: {3, nil}}
+      %Numexy.Array{array: [0, 0, 0], shape: {3, nil}}
   """
   def zeros({row, nil}) do
     List.duplicate(0, row)
@@ -437,7 +435,7 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.step_function()
-      %Array{array: [0, 1, 1], shape: {3, nil}}
+      %Numexy.Array{array: [0, 1, 1], shape: {3, nil}}
   """
   def step_function(%Array{array: v, shape: {_, nil}}) do
     v
@@ -454,7 +452,7 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.sigmoid()
-      %Array{array: [0.11920292202211755, 0.9998766054240137, 0.9933071490757153], shape: {3, nil}}
+      %Numexy.Array{array: [0.11920292202211755, 0.9998766054240137, 0.9933071490757153], shape: {3, nil}}
   """
   def sigmoid(%Array{array: v, shape: {_, nil}}) do
     v
@@ -468,7 +466,7 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.relu()
-      %Array{array: [0, 9, 5], shape: {3, nil}}
+      %Numexy.Array{array: [0, 9, 5], shape: {3, nil}}
   """
   def relu(%Array{array: v, shape: {_, nil}}) do
     v
@@ -485,7 +483,7 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([-2,9,5]) |> Numexy.softmax()
-      %Array{array: [1.6401031494862326e-5, 0.9819976839988096, 0.017985914969695496], shape: {3, nil}}
+      %Numexy.Array{array: [1.6401031494862326e-5, 0.9819976839988096, 0.017985914969695496], shape: {3, nil}}
   """
   def softmax(%Array{array: v, shape: {_, nil}}) do
     sum_num = Enum.reduce(v, 0, &(:math.exp(&1) + &2))
@@ -501,7 +499,7 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.reshape([1,2,3,4,5,6], 3)
-      %Array{array: [[1,2,3],[4,5,6]], shape: {2, 3}}
+      %Numexy.Array{array: [[1,2,3],[4,5,6]], shape: {2, 3}}
   """
   def reshape(list, col) when rem(length(list), col) == 0 do
     list
@@ -515,7 +513,7 @@ defmodule Numexy do
   ## Examples
 
       iex> Numexy.new([1,2,3,4]) |> Numexy.outer(Numexy.new([4,3,2,1]))
-      %Array{array: [[4,3,2,1],[8,6,4,2],[12,9,6,3],[16,12,8,4]], shape: {4, 4}}
+      %Numexy.Array{array: [[4,3,2,1],[8,6,4,2],[12,9,6,3],[16,12,8,4]], shape: {4, 4}}
 
   """
   def outer(%Array{array: array1, shape: _}, %Array{array: array2, shape: _}) do
