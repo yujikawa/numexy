@@ -6,12 +6,15 @@ defmodule Numexy.Mixfile do
       app: :numexy,
       version: "0.1.8",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       description: "It is a library for matrix and vector calculation.",
       package: [
-        maintainers: ["Yuji Kawakami"],             # メンテナ(以前は :contributors でしたが deprecated になりました。)
-        licenses: ["MIT"],                       # ライセンス名、ここでは MIT にしてみました
-        links: %{"GitHub" => "https://github.com/yujikawa/numexy"} # リンク集
+        # メンテナ(以前は :contributors でしたが deprecated になりました。)
+        maintainers: ["Yuji Kawakami"],
+        # ライセンス名、ここでは MIT にしてみました
+        licenses: ["MIT"],
+        # リンク集
+        links: %{"GitHub" => "https://github.com/yujikawa/numexy"}
       ],
       deps: deps(),
       test_coverage: [tool: ExCoveralls]
